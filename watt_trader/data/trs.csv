@@ -1,0 +1,101 @@
+id,code,name,cost
+0,TR00,Swords Dance,2000
+1,TR01,Body Slam,3000
+2,TR02,Flamethrower,5000
+3,TR03,Hydro Pump,8000
+4,TR04,Surf,8000
+5,TR05,Ice Beam,5000
+6,TR06,Blizzard,8000
+7,TR07,Low Kick,3000
+8,TR08,Thunderbolt,5000
+9,TR09,Thunder,8000
+10,TR10,Earthquake,8000
+11,TR11,Psychic,5000
+12,TR12,Agility,2000
+13,TR13,Focus Energy,1000
+14,TR14,Metronome,1000
+15,TR15,Fire Blast,8000
+16,TR16,Waterfall,3000
+17,TR17,Amnesia,2000
+18,TR18,Leech Life,3000
+19,TR19,Tri Attack,2000
+20,TR20,Substitute,3000
+21,TR21,Reversal,2000
+22,TR22,Sludge Bomb,2000
+23,TR23,Spikes,2000
+24,TR24,Outrage,8000
+25,TR25,Psyshock,3000
+26,TR26,Endure,1000
+27,TR27,Sleep Talk,2000
+28,TR28,Megahorn,8000
+29,TR29,Baton Pass,2000
+30,TR30,Encore,2000
+31,TR31,Iron Tail,5000
+32,TR32,Crunch,3000
+33,TR33,Shadow Ball,3000
+34,TR34,Future Sight,3000
+35,TR35,Uproar,3000
+36,TR36,Heat Wave,5000
+37,TR37,Taunt,2000
+38,TR38,Trick,2000
+39,TR39,Superpower,8000
+40,TR40,Skill Swap,1000
+41,TR41,Blaze Kick,3000
+42,TR42,Hyper Voice,5000
+43,TR43,Overheat,8000
+44,TR44,Cosmic Power,2000
+45,TR45,Muddy Water,5000
+46,TR46,Iron Defense,2000
+47,TR47,Dragon Claw,3000
+48,TR48,Bulk Up,2000
+49,TR49,Calm Mind,2000
+50,TR50,Leaf Blade,5000
+51,TR51,Dragon Dance,2000
+52,TR52,Gyro Ball,3000
+53,TR53,Close Combat,8000
+54,TR54,Toxic Spikes,2000
+55,TR55,Flare Blitz,8000
+56,TR56,Aura Sphere,3000
+57,TR57,Poison Jab,3000
+58,TR58,Dark Pulse,3000
+59,TR59,Seed Bomb,3000
+60,TR60,X-Scissor,3000
+61,TR61,Bug Buzz,5000
+62,TR62,Dragon Pulse,3000
+63,TR63,Power Gem,3000
+64,TR64,Focus Blast,8000
+65,TR65,Energy Ball,5000
+66,TR66,Brave Bird,8000
+67,TR67,Earth Power,5000
+68,TR68,Nasty Plot,2000
+69,TR69,Zen Headbutt,3000
+70,TR70,Flash Cannon,5000
+71,TR71,Leaf Storm,2000
+72,TR72,Power Whip,8000
+73,TR73,Gunk Shot,8000
+74,TR74,Iron Head,5000
+75,TR75,Stone Edge,8000
+76,TR76,Stealth Rock,3000
+77,TR77,Grass Knot,3000
+78,TR78,Sludge Wave,5000
+79,TR79,Heavy Slam,5000
+80,TR80,Electro Ball,3000
+81,TR81,Foul Play,3000
+82,TR82,Stored Power,2000
+83,TR83,Ally Switch,2000
+84,TR84,Scald,3000
+85,TR85,Work Up,1000
+86,TR86,Wild Charge,5000
+87,TR87,Drill Run,3000
+88,TR88,Heat Crash,3000
+89,TR89,Hurricane,8000
+90,TR90,Play Rough,5000
+91,TR91,Venom Drench,2000
+92,TR92,Dazzling Gleam,3000
+93,TR93,Darkest Lariat,5000
+94,TR94,High Horsepower,5000
+95,TR95,Throat Chop,3000
+96,TR96,Pollen Puff,5000
+97,TR97,Psychic Fangs,5000
+98,TR98,Liquidation,3000
+99,TR99,Body Press,3000
