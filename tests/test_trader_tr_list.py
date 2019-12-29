@@ -1,5 +1,4 @@
-import pytest
-from watt_trader.domain.trader_trs import get_tr_list
+from watt_trader.domain.trader_trs import _get_tr_id_list
 
 
 def test_returns_tr_list_for_first_tr_id():
@@ -8,7 +7,7 @@ def test_returns_tr_list_for_first_tr_id():
     first_tr_id = 47
 
     # when
-    tr_list = get_tr_list(first_tr_id)
+    tr_list = _get_tr_id_list(first_tr_id)
 
     # then
     assert tr_list[0] == 47
@@ -25,7 +24,7 @@ def test_returns_tr_list_for_upper_boundary():
     first_tr_id = 32
 
     # when
-    tr_list = get_tr_list(first_tr_id)
+    tr_list = _get_tr_id_list(first_tr_id)
 
     # then
     assert tr_list[3] == upper_tr_boundary

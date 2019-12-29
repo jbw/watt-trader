@@ -17,7 +17,6 @@ def test_loads_tr_data():
     tr_list = load_tr_csv()
 
     # then
-
     assert tr_list[0]["id"] == 0
     assert tr_list[0]["code"] == "TR00"
     assert tr_list[0]["name"] == "Swords Dance"

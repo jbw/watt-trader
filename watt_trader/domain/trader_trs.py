@@ -1,4 +1,5 @@
-from watt_trader.domain.traders import get_traders
+from watt_trader.domain.traders import get_traders, get_traders_by_id, get_tr_by_id
+
 
 TRADERS_MIN = 0
 TRADERS_MAX = 6
@@ -15,50 +16,86 @@ TRADER_TR_MAX = 99
 TRADER_TR_TOTAL = 100
 
 
+def get_tr_list(tr_ids_list):
+    return [get_tr_by_id(tr_id) for tr_id in tr_ids_list]
+
+
 def get_all_traders():
     return get_traders()
 
 
-def get_all_traders_stock(first_tr_id, trader_id):
-    all = {}
+def get_all_traders_stock(first_tr_id, selected_trader_id):
 
-    first_tr_list = get_tr_list(first_tr_id)
-    all[trader_id] = first_tr_list
+    _validate_first_tr_id(first_tr_id)
+    _validate_trader_id(selected_trader_id)
 
-    first_tr_id = first_tr_list[0]
+    all_stock = {"stock": []}
 
-    trader_ids = [0, 1, 2, 3, 4, 5, 6]
+    for trader_id in _get_trader_ids():
 
-    if trader_id > TRADERS_MAX:
-        raise Exception()
-    if trader_id < TRADERS_MIN:
-        raise Exception()
+        steps = _get_steps_away_from_trader_id(trader_id, selected_trader_id)
+        tr_id = _get_traders_first_tr_id_for_steps(first_tr_id, steps)
 
-    for t_id in trader_ids:
+        trader_location = get_traders_by_id(trader_id)["location"]
+        trs = get_tr_list(_get_tr_id_list(tr_id))
 
-        diff = abs(t_id - trader_id)
+        all_stock["stock"].append({"trader_id": trader_id, "location": trader_location, "trs": trs})
 
-        if trader_id > t_id:
-            tr_id = first_tr_id - (TRADERS_NEXT_TR_INCREMENT * diff)
-            if tr_id < FIRST_TR_MIN:
-                tr_id += FIRST_TR_TOTAL
-
-        else:
-            tr_id = (TRADERS_NEXT_TR_INCREMENT * diff) + first_tr_id
-            if tr_id > FIRST_TR_MAX:
-                tr_id -= FIRST_TR_TOTAL
-
-        all[t_id] = get_tr_list(tr_id)
-
-    return all
+    return all_stock
 
 
-def get_tr_list(traders_first_tr_id):
+def _get_traders_first_tr_id_for_steps(tr_id, steps):
 
-    if traders_first_tr_id > TRADER_TR_MAX:
-        raise Exception("TR ID max is: ", TRADER_TR_MAX)
-    if traders_first_tr_id < TRADER_TR_MIN:
-        raise Exception("TR ID min is: ", TRADER_TR_MIN)
+    if steps < 0:
+        return _get_previous_traders_first_tr_id_for_steps(tr_id, abs(steps))
+
+    return _get_next_traders_first_tr_id_for_steps(tr_id, steps)
+
+
+def _get_steps_away_from_trader_id(trader_id, reference_point_trader_id):
+
+    steps_from_reference_point = trader_id - reference_point_trader_id
+    return steps_from_reference_point
+
+
+def _get_next_traders_first_tr_id_for_steps(tr_id, steps):
+
+    new_tr_id = tr_id
+    for step in range(0, steps, 1):
+        new_tr_id = _get_next_traders_first_tr_id(new_tr_id)
+
+    return new_tr_id
+
+
+def _get_next_traders_first_tr_id(tr_id):
+
+    next_tr_id = tr_id + TRADERS_NEXT_TR_INCREMENT
+
+    if next_tr_id > FIRST_TR_MAX:
+        next_tr_id -= FIRST_TR_TOTAL
+    return next_tr_id
+
+
+def _get_previous_traders_first_tr_id_for_steps(tr_id, steps):
+
+    new_tr_id = tr_id
+    for step in range(0, steps, 1):
+        new_tr_id = _get_previous_traders_first_tr_id(new_tr_id)
+
+    return new_tr_id
+
+
+def _get_previous_traders_first_tr_id(tr_id):
+
+    next_tr_id = tr_id - TRADERS_NEXT_TR_INCREMENT
+
+    if next_tr_id < FIRST_TR_MIN:
+        next_tr_id += FIRST_TR_TOTAL
+
+    return next_tr_id
+
+
+def _get_tr_id_list(traders_first_tr_id):
 
     tr_increments = [0, 24, 42, 67, 96]
 
@@ -70,38 +107,21 @@ def get_tr_list(traders_first_tr_id):
     ]
 
 
-def get_all_traders_first_tr_ids(in_game_trader_first_tr_id):
+def _get_trader_ids():
+    trader_ids = [trader["id"] for trader in get_traders()]
+    return trader_ids
 
-    if in_game_trader_first_tr_id > FIRST_TR_MAX:
+
+def _validate_first_tr_id(first_tr_id):
+
+    if first_tr_id > FIRST_TR_MAX:
         raise Exception("TR ID max is: ", FIRST_TR_MAX)
-    if in_game_trader_first_tr_id < FIRST_TR_MIN:
+    if first_tr_id < FIRST_TR_MIN:
         raise Exception("TR ID min is: ", FIRST_TR_MIN)
 
-    all = {}
 
-    for trader_id in range(TRADERS_MIN, TRADERS_TOTAL, 1):
-        all[trader_id] = _get_traders_first_tr_id(trader_id, in_game_trader_first_tr_id)
-
-    return all
-
-
-def _get_traders_first_tr_id(trader_id, in_game_trader_first_tr_id):
-
-    tr_id_for_trader_id = in_game_trader_first_tr_id
-
-    trader_id_start = 0
-    while trader_id_start < trader_id:
-        tr_id_for_trader_id = _get_next_first_tr_id(tr_id_for_trader_id)
-        trader_id_start += 1
-
-    return tr_id_for_trader_id
-
-
-def _get_next_first_tr_id(first_tr_id):
-
-    total = first_tr_id + TRADERS_NEXT_TR_INCREMENT
-
-    if total >= FIRST_TR_MAX:
-        total -= FIRST_TR_TOTAL
-
-    return total
+def _validate_trader_id(trader_id):
+    if trader_id > TRADERS_MAX:
+        raise Exception("Trader ID max is:", TRADERS_MAX)
+    if trader_id < TRADERS_MIN:
+        raise Exception("Trader ID min is:", TRADERS_MIN)

@@ -1,16 +1,24 @@
-from pytest import fixture
-from watt_trader.domain.trader_trs import get_tr_list, get_all_traders_stock
+from watt_trader.domain.trader_trs import _get_tr_id_list, get_all_traders_stock
 
 
-def assert_traders_tr_list(trader_tr_list):
+def assert_traders_tr_list(stock_items):
 
-    assert trader_tr_list[0] == [47, 71, 89, 14, 43]
-    assert trader_tr_list[1] == [4, 28, 46, 71, 0]
-    assert trader_tr_list[2] == [11, 35, 53, 78, 7]
-    assert trader_tr_list[3] == [18, 42, 60, 85, 14]
-    assert trader_tr_list[4] == [25, 49, 67, 92, 21]
-    assert trader_tr_list[5] == [32, 56, 74, 99, 28]
-    assert trader_tr_list[6] == [39, 63, 81, 6, 35]
+    trader_tr_list = [
+        [47, 71, 89, 14, 43],
+        [4, 28, 46, 71, 0],
+        [11, 35, 53, 78, 7],
+        [18, 42, 60, 85, 14],
+        [25, 49, 67, 92, 21],
+        [32, 56, 74, 99, 28],
+        [39, 63, 81, 6, 35],
+    ]
+
+    for stock in stock_items["stock"]:
+
+        trader_id = stock["trader_id"]
+        trs = [tr["id"] for tr in stock["trs"]]
+
+        assert trs == trader_tr_list[trader_id]
 
 
 def test_correct_stock_returns_for_trader_given_first_tr_id():
@@ -19,7 +27,7 @@ def test_correct_stock_returns_for_trader_given_first_tr_id():
     first_tr = 4
 
     # when
-    result = get_tr_list(first_tr)
+    result = _get_tr_id_list(first_tr)
 
     # then
     expect = [4, 28, 46, 71, 0]
