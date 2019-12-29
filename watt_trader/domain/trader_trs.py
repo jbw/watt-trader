@@ -8,6 +8,7 @@
 # Giant's Cap
 # Each Watt Trader's stock follows a schedule that changes daily,
 # and always consists of one type of Poké Ball, a Wishing Piece, and five distinct TRs.
+import math
 
 TRADERS_MIN = 0
 TRADERS_MAX = 6
@@ -28,6 +29,40 @@ from watt_trader.domain.traders import get_traders
 
 def get_all_traders():
     return get_traders()
+
+
+def get_all_traders_stock(first_tr_id, trader_id):
+    all = {}
+
+    first_tr_list = get_tr_list(first_tr_id)
+    all[trader_id] = first_tr_list
+
+    first_tr_id = first_tr_list[0]
+
+    trader_ids = [0, 1, 2, 3, 4, 5, 6]
+
+    if trader_id > TRADERS_MAX:
+        raise Exception()
+    if trader_id < TRADERS_MIN:
+        raise Exception()
+
+    for t_id in trader_ids:
+
+        diff = abs(t_id - trader_id)
+
+        if trader_id > t_id:
+            tr_id = first_tr_id - (TRADERS_NEXT_TR_INCREMENT * diff)
+            if tr_id < FIRST_TR_MIN:
+                tr_id += FIRST_TR_TOTAL
+
+        else:
+            tr_id = (TRADERS_NEXT_TR_INCREMENT * diff) + first_tr_id
+            if tr_id > FIRST_TR_MAX:
+                tr_id -= FIRST_TR_TOTAL
+
+        all[t_id] = get_tr_list(tr_id)
+
+    return all
 
 
 def get_tr_list(traders_first_tr_id):
