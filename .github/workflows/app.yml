@@ -27,4 +27,4 @@ jobs:
         run: |
           pip install pytest
           pip install pytest-cov
-          pytest --cov=watt-trader tests/
+          python -m pytest --cov=watt-trader tests/
