@@ -1,0 +1,1 @@
+python -m pytest --cov-report html:.coverage_html --cov=watt_trader tests/
