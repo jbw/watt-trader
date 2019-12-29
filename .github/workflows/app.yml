@@ -27,7 +27,7 @@ jobs:
         run: |
           pip install pytest
           pip install pytest-cov
-          python -m pytest --cov=watt-trader --cov-report=xml tests/
+          python -m pytest --cov-report=xml --cov=watt_trader tests
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.5
         with:
