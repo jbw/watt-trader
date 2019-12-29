@@ -1,14 +1,4 @@
-# In Sword and Shield, Watt Traders can be found in the following Wild Area locations:
-# Meetup Spot 47
-# East Lake Axewell
-# Dappled Grove
-# Giant's Seat
-# Bridge Field 25
-# Hammerlocke Hills
-# Giant's Cap
-# Each Watt Trader's stock follows a schedule that changes daily,
-# and always consists of one type of Poké Ball, a Wishing Piece, and five distinct TRs.
-import math
+from watt_trader.domain.traders import get_traders
 
 TRADERS_MIN = 0
 TRADERS_MAX = 6
@@ -23,8 +13,6 @@ FIRST_TR_TOTAL = 50
 TRADER_TR_MIN = 0
 TRADER_TR_MAX = 99
 TRADER_TR_TOTAL = 100
-
-from watt_trader.domain.traders import get_traders
 
 
 def get_all_traders():
