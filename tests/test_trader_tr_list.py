@@ -1,4 +1,4 @@
-from watt_trader.domain.trader_trs import _get_tr_id_list
+from watt_trader.domain.trader_trs import _get_tr_id_list, get_all_traders
 
 
 def test_returns_tr_list_for_first_tr_id():
@@ -28,3 +28,15 @@ def test_returns_tr_list_for_upper_boundary():
 
     # then
     assert tr_list[3] == upper_tr_boundary
+
+
+def test_returns_all_traders():
+
+    # given
+    all_traders = get_all_traders()
+
+    # when
+    trader_location = all_traders[0]["location"]
+
+    # then
+    assert trader_location == "Meetup Spot"
