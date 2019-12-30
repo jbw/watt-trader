@@ -50,6 +50,7 @@ jobs:
       - name: Frontend
         run: |
           cd frontend
+          yarn install
           yarn build
       - name: Deploy frontend
         uses: appleboy/scp-action@v0.0.5
