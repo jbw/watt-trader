@@ -8,7 +8,6 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import '@fortawesome/fontawesome-free/css/all.css';
 
 import Badge from 'react-bootstrap/Badge'
 
@@ -84,17 +83,33 @@ function App() {
   const onTraderChange = (values) => setSelectedTraderId(values[0].id)
 
   return (
-    <Container>
 
-      <Jumbotron>
-        <h1>Watt Trader</h1>
-        <p>Select the first TR from a Watt Trader then press 'find' all the TRs available for the current schedule.</p>
-      </Jumbotron>
+    <Container>
+      <Row>
+        <Jumbotron style={{ width: '100%' }}>
+
+          <h1>Watt Trader</h1>
+          <p>To show all the TRs available from Watt Traders across in game locations for the current schedule select or search below.</p>
+          <p>You must always select the <strong>first</strong> TR in a Watt Traders list for this to work.</p>
+        </Jumbotron>
+      </Row>
 
       <Row className="justify-content-md-center">
-        <Col sm>
+        <Col xs sm={4}>
           <Select
-            placeholder={'Search by TR code e.g. TR99'}
+            placeholder={'Trader location e.g. Meetup Spot'}
+
+            loading={traders_loading}
+            options={traders}
+            labelField={'name'}
+            sortBy={'id'}
+            valueField={'id'}
+            onChange={(values) => onTraderChange(values)}
+          />
+        </Col>
+        <Col xs sm={4}>
+          <Select
+            placeholder={'TR code e.g. TR99'}
             loading={trs_loading}
             searchable={true}
             options={trs}
@@ -105,28 +120,21 @@ function App() {
             onChange={(values) => onTRChange(values)}
           />
         </Col>
-        <Col sm>
-          <Select
-            loading={traders_loading}
-            options={traders}
-            labelField={'name'}
-            sortBy={'id'}
-            valueField={'id'}
-            onChange={(values) => onTraderChange(values)}
-          />
-        </Col>
-        <Col sm>
+        <div>
           <Button onClick={refetch}>Find</Button>
-        </Col>
-      </Row>
 
-      <Row style={{ marginTop: '2rem' }}>
+        </div>
+
+
+
+      </Row>
+      <Row style={{ justifyContent: 'center', marginTop: '2rem' }}>
 
         {stock_loading ? <p>Loading..</p> :
           <>
             {
               stock['stock'].map(s =>
-                <Card key={s.trader_id} bg="light" style={{ minWidth: '25rem', maxWidth: '100rem', margin: '1rem' }}>
+                <Card key={s.trader_id} bg="light" style={{ minWidth: '25rem', maxWidth: '50rem', margin: '0.5rem' }}>
                   <TraderStockCard stock={s} />
                 </Card>
               )
