@@ -21,7 +21,7 @@ def get_tr_list(tr_ids_list):
 
 
 def get_all_trs():
-    return get_trs()
+    return [trs for trs in get_trs() if trs["id"] <= FIRST_TR_MAX]
 
 
 def get_all_traders():
