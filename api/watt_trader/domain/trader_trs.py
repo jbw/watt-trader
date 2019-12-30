@@ -20,8 +20,12 @@ def get_tr_list(tr_ids_list):
     return [get_tr_by_id(tr_id) for tr_id in tr_ids_list]
 
 
-def get_all_trs():
+def get_all_first_trs():
     return [trs for trs in get_trs() if trs["id"] <= FIRST_TR_MAX]
+
+
+def get_all_trs():
+    return get_trs()
 
 
 def get_all_traders():

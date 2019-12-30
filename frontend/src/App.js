@@ -9,15 +9,19 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import Badge from 'react-bootstrap/Badge'
-import Spinner from 'react-bootstrap/Spinner'
+import Badge from 'react-bootstrap/Badge';
+import Spinner from 'react-bootstrap/Spinner';
+import { MDBDataTable } from 'mdbreact';
 
 
 const LoadingSpinner = () => {
   return (
-    <Spinner variant="primary" animation="border" role="status">
-      <span className="sr-only">Loading...</span>
-    </Spinner>
+    <div class="d-flex justify-content-center">
+      <Spinner variant="primary" animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    </div>
+
   )
 }
 
@@ -63,19 +67,17 @@ function TraderStockCard(props) {
           )
         }
       </ListGroup>
-
-
     </>
   )
 }
 
 function App() {
 
-  const [selectedTRId, setSelectedTRId] = useState(0)
-  const [selectedTraderId, setSelectedTraderId] = useState(0)
+  const [selectedTR, setSelectedTR] = useState({ id: 0, name: 'Swords Dance' })
+  const [selectedTrader, setSelectedTrader] = useState({ id: 0, name: 'Meetup Spot' })
 
-  const [{ data: stock, loading: stock_loading, error: stock_error }, refetch] = useAxios(
-    `/api/stock/${selectedTraderId}/${selectedTRId}`
+  const [{ data: stock, loading: stock_loading, error: stock_error }] = useAxios(
+    `/api/stock/${selectedTrader.id}/${selectedTR.id}`
   )
 
   const [{ data: traders, loading: traders_loading, error: traders_error }] = useAxios(
@@ -85,11 +87,12 @@ function App() {
     '/api/trs'
   )
 
+
   if (stock_error || traders_error || trs_error) return <p>Error!</p>
 
-  const onTRChange = (values) => setSelectedTRId(values[0].id)
+  const onTRChange = (values) => setSelectedTR(values[0])
 
-  const onTraderChange = (values) => setSelectedTraderId(values[0].id)
+  const onTraderChange = (values) => setSelectedTrader(values[0])
 
   return (
 
@@ -97,51 +100,54 @@ function App() {
       <Row>
         <Jumbotron style={{ width: '100%' }}>
 
-          <h1>Watt Trader</h1>
-          <p>To show all the TRs available from Watt Traders across in game locations select or search below.</p>
+          <h1>Watt Trader TR Finder</h1>
+          <p>Find all the TRs available from Watt Traders across in-game locations select or search below.</p>
           <ul>
             <li>A Watt Trader's stock will reshuffle every couple of days.</li>
-            <li>You must always select the <strong>first</strong> TR in a Watt Traders list for this to work. <a target="_blank" rel="noopener noreferrer" href="https://i.imgur.com/XN8i6Tt.jpg">See example</a></li>
+            <li>You must always select the <strong>first</strong> TR in a Watt Traders list for this to work. <a target="_blank" rel="noopener noreferrer" href="https://i.imgur.com/XN8i6Tt.jpg">See example.</a></li>
           </ul>
-          <strong>Tip:</strong> Use the in game map to find the locations.
-
+          <strong>Tip:</strong> use the in game map to find the locations.
         </Jumbotron>
       </Row>
+      {trs_loading || traders_loading ? <LoadingSpinner /> :
+        <Row className="justify-content-md-center">
 
-      <Row className="justify-content-md-center">
+          <Card border="light" style={{ minWidth: '20rem', maxWidth: '50rem', margin: '0.5rem' }}>
 
-        <Card border="light" style={{ minWidth: '20rem', maxWidth: '50rem', margin: '0.5rem' }}>
+            <Select style={{ minWidth: '20rem' }}
+              placeholder={'Trader location e.g. Meetup Spot'}
+              loading={traders_loading}
+              options={traders}
+              values={[traders[0]]}
+              labelField={'name'}
+              sortBy={'id'}
+              valueField={'id'}
+              onChange={(values) => onTraderChange(values)}
+            />
+          </Card>
 
-          <Select style={{ minWidth: '20rem' }}
-            placeholder={'Trader location e.g. Meetup Spot'}
-            loading={traders_loading}
-            options={traders}
-            labelField={'name'}
-            sortBy={'id'}
-            valueField={'id'}
-            onChange={(values) => onTraderChange(values)}
-          />
-        </Card>
-        <Card border="light" style={{ minWidth: '20rem', maxWidth: '50rem', margin: '0.5rem' }} >
-          <Select style={{ minWidth: '20rem' }}
-            placeholder={'TR code e.g. TR99'}
-            loading={trs_loading}
-            searchable={true}
-            options={trs}
-            labelField={'name'}
-            searchBy={'code'}
-            sortBy={'id'}
-            valueField={'id'}
-            onChange={(values) => onTRChange(values)}
-          />
-        </Card>
-        <Card border="light" style={{ margin: '0.5rem' }}>
-          <Button variant="dark" onClick={refetch}>Find</Button>
-        </Card>
-      </Row>
+          <Card border="light" style={{ minWidth: '20rem', maxWidth: '50rem', margin: '0.5rem' }} >
+            <Select style={{ minWidth: '20rem' }}
+              placeholder={'First TR code (TR00-TR49)'}
+              loading={trs_loading}
+              searchable={true}
+              options={trs}
+              values={[trs[0]]}
+
+              labelField={'name'}
+              searchBy={'code'}
+              sortBy={'id'}
+              valueField={'id'}
+              onChange={(values) => onTRChange(values)}
+            />
+          </Card>
+
+        </Row>
+      }
+
       <Row style={{ justifyContent: 'center', marginTop: '2rem' }}>
 
-        {stock_loading ? <LoadingSpinner /> :
+        {!stock_loading &&
           <>
             {
               stock['stock'].map(s =>
@@ -153,6 +159,47 @@ function App() {
           </>
         }
       </Row>
+
+      {!stock_loading &&
+        <Row className="justify-content-md-center">
+
+          <Container style={{ width: '100%' }}>
+
+            <div style={{ marginTop: '2rem', marginBottom: '1.5rem' }}>
+              <h3>Not in circulation</h3>
+              <p>Below is a table of TRs which are not currently available in game given the current selection of <strong>{selectedTrader.name}</strong> and <strong>{selectedTR.name}</strong>.</p>
+            </div>
+
+            <MDBDataTable
+              striped
+              barReverse
+
+              info={false}
+              noBottomColumns
+              data={{
+                columns: [
+                  {
+                    label: 'Name',
+                    field: 'name',
+                    sort: 'asc',
+                  },
+                  {
+                    label: 'Code',
+                    field: 'code',
+                    sort: 'asc',
+                  },
+                  {
+                    label: 'Cost',
+                    field: 'cost',
+                    sort: 'asc',
+
+                  }
+                ], rows: stock['not_in_circulation']
+              }}
+            />
+          </Container>
+        </Row>
+      }
     </Container >
   );
 }
