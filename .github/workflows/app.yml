@@ -38,7 +38,7 @@ jobs:
           file: ./api/coverage.xml
           flags: unittests
           fail_ci_if_error: true
-      - name: Deploy
+      - name: Deploy api
         uses: appleboy/scp-action@v0.0.5
         with:
           host: ${{ secrets.HOST }}
@@ -47,3 +47,16 @@ jobs:
           port: 22
           source: "api"
           target: "staging/watt-trader"
+      - name: Frontend
+        run: |
+          cd frontend
+          yarn build
+      - name: Deploy frontend
+        uses: appleboy/scp-action@v0.0.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          source: "frontend/build"
+          target: "staging/watt-trader/frontend"
