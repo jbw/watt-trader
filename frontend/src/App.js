@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useAxios from 'axios-hooks'
+import '@fortawesome/fontawesome-free/css/all.css'
 import Select from "react-dropdown-select";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -8,17 +9,25 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-
 import Badge from 'react-bootstrap/Badge'
+import Spinner from 'react-bootstrap/Spinner'
+
+
+const LoadingSpinner = () => {
+  return (
+    <Spinner variant="primary" animation="border" role="status">
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  )
+}
 
 function TraderStockCard(props) {
 
   const { trs, name } = props.stock;
 
-
   return (
     <>
-      <Card.Header>{name}</Card.Header>
+      <Card.Header><i className="far fa-map"></i> {name}</Card.Header>
 
       <ListGroup >
         {
@@ -27,21 +36,21 @@ function TraderStockCard(props) {
 
               return (
 
-                <ListGroup.Item >
+                <ListGroup.Item key={tr.code}>
                   <Row>
                     <Col>
 
-                      <Badge pill variant="dark" style={{ float: 'left' }} >
+                      <Badge variant="primary" style={{ float: 'left' }} >
                         {tr.name}
                       </Badge>
                     </Col>
                     <Col>
-                      <Badge pill variant="info" style={{ float: 'right', }}>
+                      <Badge variant="secondary" style={{ float: 'right', }}>
                         {tr.code}
                       </Badge>
                     </Col>
                     <Col>
-                      <Badge pill variant="dark" style={{ float: 'right' }}>
+                      <Badge pill variant="warning" style={{ float: 'right' }}>
                         {tr.cost} W
                       </Badge>
                     </Col>
@@ -89,16 +98,22 @@ function App() {
         <Jumbotron style={{ width: '100%' }}>
 
           <h1>Watt Trader</h1>
-          <p>To show all the TRs available from Watt Traders across in game locations for the current schedule select or search below.</p>
-          <p>You must always select the <strong>first</strong> TR in a Watt Traders list for this to work.</p>
+          <p>To show all the TRs available from Watt Traders across in game locations select or search below.</p>
+          <ul>
+            <li>A Watt Trader's stock will reshuffle every couple of days.</li>
+            <li>You must always select the <strong>first</strong> TR in a Watt Traders list for this to work. <a target="_blank" rel="noopener noreferrer" href="https://i.imgur.com/XN8i6Tt.jpg">See example</a></li>
+          </ul>
+          <strong>Tip:</strong> Use the in game map to find the locations.
+
         </Jumbotron>
       </Row>
 
       <Row className="justify-content-md-center">
-        <Col xs sm={4}>
-          <Select
-            placeholder={'Trader location e.g. Meetup Spot'}
 
+        <Card border="light" style={{ minWidth: '20rem', maxWidth: '50rem', margin: '0.5rem' }}>
+
+          <Select style={{ minWidth: '20rem' }}
+            placeholder={'Trader location e.g. Meetup Spot'}
             loading={traders_loading}
             options={traders}
             labelField={'name'}
@@ -106,9 +121,9 @@ function App() {
             valueField={'id'}
             onChange={(values) => onTraderChange(values)}
           />
-        </Col>
-        <Col xs sm={4}>
-          <Select
+        </Card>
+        <Card border="light" style={{ minWidth: '20rem', maxWidth: '50rem', margin: '0.5rem' }} >
+          <Select style={{ minWidth: '20rem' }}
             placeholder={'TR code e.g. TR99'}
             loading={trs_loading}
             searchable={true}
@@ -119,18 +134,14 @@ function App() {
             valueField={'id'}
             onChange={(values) => onTRChange(values)}
           />
-        </Col>
-        <div>
-          <Button onClick={refetch}>Find</Button>
-
-        </div>
-
-
-
+        </Card>
+        <Card border="light" style={{ margin: '0.5rem' }}>
+          <Button variant="dark" onClick={refetch}>Find</Button>
+        </Card>
       </Row>
       <Row style={{ justifyContent: 'center', marginTop: '2rem' }}>
 
-        {stock_loading ? <p>Loading..</p> :
+        {stock_loading ? <LoadingSpinner /> :
           <>
             {
               stock['stock'].map(s =>
