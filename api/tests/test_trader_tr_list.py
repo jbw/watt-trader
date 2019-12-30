@@ -36,7 +36,7 @@ def test_returns_all_traders():
     all_traders = get_all_traders()
 
     # when
-    trader_location = all_traders[0]["location"]
+    trader_location = all_traders[0]["name"]
 
     # then
     assert trader_location == "Meetup Spot"

@@ -8,7 +8,7 @@ def test_loads_traders_data():
 
     # then
     assert trader_list[0]["id"] == 0
-    assert trader_list[0]["location"] == "Meetup Spot"
+    assert trader_list[0]["name"] == "Meetup Spot"
 
 
 def test_loads_tr_data():

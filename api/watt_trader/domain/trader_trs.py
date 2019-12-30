@@ -1,4 +1,4 @@
-from watt_trader.domain.traders import get_traders, get_traders_by_id, get_tr_by_id
+from watt_trader.domain.traders import get_traders, get_trs, get_traders_by_id, get_tr_by_id
 
 
 TRADERS_MIN = 0
@@ -20,6 +20,10 @@ def get_tr_list(tr_ids_list):
     return [get_tr_by_id(tr_id) for tr_id in tr_ids_list]
 
 
+def get_all_trs():
+    return get_trs()
+
+
 def get_all_traders():
     return get_traders()
 
@@ -36,10 +40,10 @@ def get_all_traders_stock(first_tr_id, selected_trader_id):
         steps = _get_steps_away_from_trader_id(trader_id, selected_trader_id)
         tr_id = _get_traders_first_tr_id_for_steps(first_tr_id, steps)
 
-        trader_location = get_traders_by_id(trader_id)["location"]
+        trader_location = get_traders_by_id(trader_id)["name"]
         trs = get_tr_list(_get_tr_id_list(tr_id))
 
-        all_stock["stock"].append({"trader_id": trader_id, "location": trader_location, "trs": trs})
+        all_stock["stock"].append({"trader_id": trader_id, "name": trader_location, "trs": trs})
 
     return all_stock
 
