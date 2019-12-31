@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import useAxios from 'axios-hooks'
 import '@fortawesome/fontawesome-free/css/all.css'
 import Select from "react-dropdown-select";
-import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -12,16 +11,17 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Badge from 'react-bootstrap/Badge';
 import Spinner from 'react-bootstrap/Spinner';
 import { MDBDataTable } from 'mdbreact';
+import ReactGA from 'react-ga';
+
 
 
 const LoadingSpinner = () => {
   return (
-    <div class="d-flex justify-content-center">
+    <div className="d-flex justify-content-center">
       <Spinner variant="primary" animation="border" role="status">
         <span className="sr-only">Loading...</span>
       </Spinner>
     </div>
-
   )
 }
 
@@ -72,6 +72,8 @@ function TraderStockCard(props) {
 }
 
 function App() {
+
+  ReactGA.pageview('watt.jbw.dev', ['watt']);
 
   const [selectedTR, setSelectedTR] = useState({ id: 0, name: 'Swords Dance' })
   const [selectedTrader, setSelectedTrader] = useState({ id: 0, name: 'Meetup Spot' })
